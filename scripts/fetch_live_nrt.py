@@ -112,9 +112,38 @@ added_count = final_count - (initial_count - len(live_clean))
 
 combined_df.to_csv(processed_file, index=False)
 
+import subprocess
+
+# ... (keep all your existing fetch logic above) ...
+
+# Save clean combined dataset
+combined_df.to_csv(processed_file, index=False)
+
 print("\n==========================================")
 print(f"Live Pipeline Update Complete!")
 print(f"New Unique Detections Added Today: {added_count}")
 print(f"Total Master Dataset Size: {final_count} records")
 print(f"Saved To: {processed_file}")
 print("==========================================")
+
+# --- AUTOMATIC GITHUB PUSH ---
+try:
+    print("\nPushing updated dataset to GitHub repository...")
+    # Stage both the updated script and the dataset file
+    subprocess.run(["git", "add", "."], check=True)
+    
+    # Commit changes
+    result = subprocess.run(
+        ["git", "commit", "-m", f"Auto-update NRT thermal dataset: {today_str}"],
+        capture_output=True,
+        text=True
+    )
+    
+    if "nothing to commit" in result.stdout or "nothing to commit" in result.stderr:
+        print("NOTICE: No new dataset changes to push today.")
+    else:
+        subprocess.run(["git", "push"], check=True)
+        print("SUCCESS: Dataset and pipeline updates successfully pushed to GitHub!")
+
+except Exception as e:
+    print(f"Git Auto-Push Warning/Notice: {e}")
