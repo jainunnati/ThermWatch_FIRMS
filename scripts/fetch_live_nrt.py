@@ -1,149 +1,104 @@
 import os
-import time
-from datetime import datetime, timedelta
-import pandas as pd
+import io
 import requests
+import pandas as pd
+from datetime import datetime, timezone
+import subprocess
 from dotenv import load_dotenv
 
-load_dotenv()
-MAP_KEY = os.getenv("FIRMS_MAP_KEY")
+# Base Paths
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ENV_PATH = os.path.join(BASE_DIR, ".env")
+RAW_DIR = os.path.join(BASE_DIR, "data", "raw")
+PROCESSED_FILE = os.path.join(BASE_DIR, "data", "processed", "thermwatch_clean.csv")
 
-if not MAP_KEY or len(MAP_KEY) < 20:
-    raise ValueError("ERROR: FIRMS_MAP_KEY is missing or invalid in your .env file!")
+# Explicitly load .env from project root
+load_dotenv(dotenv_path=ENV_PATH)
 
-# Config
-AREA_INDIA = "68,8,97,37"
-# NRT sensors for daily live updates
-LIVE_SENSORS = ["VIIRS_NOAA20_NRT", "VIIRS_NOAA21_NRT", "VIIRS_SNPP_NRT", "MODIS_NRT"]
-LOOKBACK_DAYS = 2  # Fetch past 2 days to cover satellite processing delays
+# Clean white spaces/quotes from API key
+raw_key = os.getenv("MAP_KEY") or os.getenv("FIRMS_MAP_KEY") or ""
+MAP_KEY = raw_key.strip().strip("'").strip('"')
 
-processed_file = os.path.join("data", "processed", "thermwatch_clean.csv")
-raw_dir = os.path.join("data", "raw")
-os.makedirs(raw_dir, exist_ok=True)
+if not MAP_KEY:
+    print(f"Error: Neither MAP_KEY nor FIRMS_MAP_KEY environment variable found in {ENV_PATH}.")
+    exit(1)
 
-today_str = datetime.now().strftime("%Y-%m-%d")
-print(f"=== Running Live NRT Fetcher for India: {today_str} ===")
+os.makedirs(RAW_DIR, exist_ok=True)
 
-new_frames = []
+# Fetch rolling 3-day window
+DAY_RANGE = 3
+SATELLITE_SOURCES = ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT", "MODIS_NRT"]
 
-for sensor in LIVE_SENSORS:
-    # URL format for NRT area fetch
-    url = f"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{MAP_KEY}/{sensor}/{AREA_INDIA}/{LOOKBACK_DAYS}"
+# Bounding box for India: [west_lon, south_lat, east_lon, north_lat]
+INDIA_BBOX = "68.0,6.0,97.5,37.5"
+
+print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting daily NRT ingestion...")
+
+fetched_dfs = []
+today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+}
+
+for source in SATELLITE_SOURCES:
+    # Area endpoint with India bounding box to prevent Status 400
+    url = f"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{MAP_KEY}/{source}/{INDIA_BBOX}/{DAY_RANGE}"
     try:
-        res = requests.get(url, timeout=20)
-        if res.status_code == 200 and "Invalid MAP_KEY" not in res.text:
-            lines = res.text.strip().splitlines()
-            if len(lines) > 1:
-                # Save raw daily file
-                daily_raw_path = os.path.join(raw_dir, f"live_{sensor}_{today_str}.csv")
-                with open(daily_raw_path, "w", encoding="utf-8") as f:
-                    f.write(res.text)
-                
-                df_chunk = pd.read_csv(daily_raw_path)
-                df_chunk["source_sensor"] = sensor
-                new_frames.append(df_chunk)
-                print(f"  [LIVE FETCHED] {sensor}: {len(df_chunk)} records.")
-            else:
-                print(f"  [NO NEW DATA] {sensor}")
+        response = requests.get(url, headers=headers, timeout=30)
+        
+        if response.status_code == 200 and len(response.text.strip()) > 50 and "latitude" in response.text.lower():
+            # Save raw copy to disk
+            raw_filename = os.path.join(RAW_DIR, f"{today_str}_{source}_raw.csv")
+            with open(raw_filename, "w", encoding="utf-8") as f:
+                f.write(response.text)
+            
+            # Read into Pandas
+            df = pd.read_csv(io.StringIO(response.text))
+            df['satellite_source'] = source
+            fetched_dfs.append(df)
+            print(f"Successfully fetched {len(df)} rows from {source}. Raw saved to {raw_filename}")
         else:
-            print(f"  [FAILED] {sensor}: HTTP {res.status_code}")
+            print(f"Warning: No valid CSV returned for {source} (Status: {response.status_code})")
+            if response.status_code != 200:
+                print(f"Response snippet: {response.text[:150]}")
     except Exception as e:
-        print(f"  [ERROR] {sensor}: {e}")
-    time.sleep(1)
+        print(f"Error fetching from {source}: {e}")
 
-if not new_frames:
-    print("No new NRT detections retrieved today.")
-    exit()
+if not fetched_dfs:
+    print("No new data fetched today. Exiting without updating clean dataset.")
+    exit(0)
 
-# Load incoming live records
-live_df = pd.concat(new_frames, ignore_index=True)
+# Merge fetched data
+new_data = pd.concat(fetched_dfs, ignore_index=True)
 
-# Standardize live data columns
-if 'bright_ti4' in live_df.columns and 'brightness' in live_df.columns:
-    live_df['brightness_k'] = live_df['bright_ti4'].fillna(live_df['brightness'])
-elif 'bright_ti4' in live_df.columns:
-    live_df['brightness_k'] = live_df['bright_ti4']
-elif 'brightness' in live_df.columns:
-    live_df['brightness_k'] = live_df['brightness']
-
-if 'frp' in live_df.columns:
-    live_df['frp_mw'] = live_df['frp']
-
-def norm_conf(val):
-    v = str(val).lower().strip()
-    if v == 'l': return 30.0
-    elif v == 'n': return 70.0
-    elif v == 'h': return 95.0
-    else:
-        try: return float(v)
-        except ValueError: return 50.0
-
-if 'confidence' in live_df.columns:
-    live_df['confidence_score'] = live_df['confidence'].apply(norm_conf)
-
-if 'acq_date' in live_df.columns and 'acq_time' in live_df.columns:
-    time_str = live_df['acq_time'].astype(str).str.zfill(4)
-    live_df['timestamp'] = pd.to_datetime(
-        live_df['acq_date'] + ' ' + time_str.str[:2] + ':' + time_str.str[2:],
-        errors='coerce'
-    )
-
-cols_to_keep = [
-    'latitude', 'longitude', 'timestamp', 'brightness_k', 
-    'frp_mw', 'confidence_score', 'satellite', 'instrument', 
-    'day_night', 'source_sensor'
-]
-available_cols = [c for c in cols_to_keep if c in live_df.columns]
-live_clean = live_df[available_cols].copy()
-
-# Append to existing master clean CSV
-if os.path.exists(processed_file):
-    existing_df = pd.read_csv(processed_file)
-    existing_df['timestamp'] = pd.to_datetime(existing_df['timestamp'])
-    combined_df = pd.concat([existing_df, live_clean], ignore_index=True)
+# Align columns and deduplicate
+if os.path.exists(PROCESSED_FILE):
+    existing_df = pd.read_csv(PROCESSED_FILE)
+    
+    combined_df = pd.concat([existing_df, new_data], ignore_index=True)
+    dedup_cols = [c for c in ['latitude', 'longitude', 'acq_date', 'acq_time', 'satellite'] if c in combined_df.columns]
+    clean_df = combined_df.drop_duplicates(subset=dedup_cols, keep='first')
+    
+    added_rows = len(clean_df) - len(existing_df)
+    print(f"Merge Complete: {added_rows} new unique observations added.")
 else:
-    combined_df = live_clean
+    clean_df = new_data.drop_duplicates()
+    print(f"Created new master clean file with {len(clean_df)} observations.")
 
-# Deduplicate
-initial_count = len(combined_df)
-combined_df = combined_df.drop_duplicates(subset=['latitude', 'longitude', 'timestamp'])
-final_count = len(combined_df)
-added_count = final_count - (initial_count - len(live_clean))
+# Save master processed dataset
+clean_df.to_csv(PROCESSED_FILE, index=False)
 
-combined_df.to_csv(processed_file, index=False)
-
-import subprocess
-
-# ... (keep all your existing fetch logic above) ...
-
-# Save clean combined dataset
-combined_df.to_csv(processed_file, index=False)
-
-print("\n==========================================")
-print(f"Live Pipeline Update Complete!")
-print(f"New Unique Detections Added Today: {added_count}")
-print(f"Total Master Dataset Size: {final_count} records")
-print(f"Saved To: {processed_file}")
-print("==========================================")
-
-# --- AUTOMATIC GITHUB PUSH ---
+# Auto-push to GitHub
 try:
-    print("\nPushing updated dataset to GitHub repository...")
-    # Stage both the updated script and the dataset file
-    subprocess.run(["git", "add", "."], check=True)
+    print("Pushing updated master CSV to GitHub...")
+    subprocess.run(["git", "add", PROCESSED_FILE], check=True, cwd=BASE_DIR)
     
-    # Commit changes
-    result = subprocess.run(
-        ["git", "commit", "-m", f"Auto-update NRT thermal dataset: {today_str}"],
-        capture_output=True,
-        text=True
-    )
-    
-    if "nothing to commit" in result.stdout or "nothing to commit" in result.stderr:
-        print("NOTICE: No new dataset changes to push today.")
-    else:
-        subprocess.run(["git", "push"], check=True)
-        print("SUCCESS: Dataset and pipeline updates successfully pushed to GitHub!")
+    commit_msg = f"Auto-update NRT thermal dataset: {today_str}"
+    subprocess.run(["git", "commit", "-m", commit_msg], check=True, cwd=BASE_DIR)
+    subprocess.run(["git", "push", "origin", "main"], check=True, cwd=BASE_DIR)
+    print("Successfully pushed latest dataset to GitHub!")
+except subprocess.CalledProcessError as e:
+    print(f"Git Auto-Push Notice: {e}")
 
-except Exception as e:
-    print(f"Git Auto-Push Warning/Notice: {e}")
+print("NRT Pipeline completed successfully.")
