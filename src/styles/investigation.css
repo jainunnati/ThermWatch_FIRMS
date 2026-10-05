@@ -1,0 +1,26 @@
+/* Real-data investigation content, rendered inside the V7 investigation drawer.
+   Reuses the V7 .step/.kv/.table/.note/.chart tokens from app.css; adds only tiles, callouts, tags and bars. */
+.tw-tag { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--panel-2); } .tw-tag--pihs { background: #FF6A2B; color: #fff; }
+.tw-bar-row { display: grid; grid-template-columns: 140px 48px 1fr; gap: 8px; align-items: center; font-size: 13px; }
+.tw-bar { height: 7px; background: var(--panel-2); border-radius: 4px; overflow: hidden; } .tw-bar i { display: block; height: 100%; background: #FF6A2B; }
+.tw-pager { display: flex; gap: 8px; align-items: center; margin-top: 6px; font-size: 12px; }
+.inv-badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 8px; }
+.tw-tag--high { background: #e5484d; color: #fff; } .tw-tag--medium { background: #f5a524; color: #1a1a1a; }
+.inv-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 8px 0; }
+.inv-tile { background: var(--panel-2); border: 1px solid var(--hair); border-radius: 8px; padding: 9px 11px; }
+.inv-tile__v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; } .inv-tile__t { font-size: 12px; color: var(--muted); } .inv-tile__h { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.inv-callout { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-start; padding: 12px 14px; margin: 8px 0; border: 1px solid var(--hair); border-radius: 8px; background: var(--panel-2); }
+.inv-callout--pihs { border-color: #FF6A2B; box-shadow: inset 4px 0 0 #FF6A2B; }
+.inv-callout--ml { border-style: dashed; }
+.inv-callout__k { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); } .inv-callout__v { font-size: 20px; font-weight: 700; }
+.step--major .step__title { font-size: 16px; } .step--major .step__num { border-color: #FF6A2B; }
+.inv-list { margin: 6px 0; padding-left: 18px; font-size: 13px; line-height: 1.55; }
+.inv-toolbar-row { margin: 6px 0; } .tw-filter { display: flex; gap: 6px; margin-bottom: 6px; } .tw-filter input { flex: 1; min-width: 0; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--hair); background: transparent; }
+.tw-filter select { border-radius: 4px; border: 1px solid var(--hair); background: var(--panel); color: var(--text); }
+.split-bar__track { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--panel-3); }
+.split-bar__legend { display: flex; gap: 14px; margin-top: 4px; font-size: 12px; color: var(--muted); } .split-bar__legend b { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; }
+.sb-night { background: #4F6A96; } .sb-day { background: #F0A43A; }
+.chart-unknown { fill: #F0A43A; opacity: .85; }
+.inv-bars { margin: 6px 0; }
+@media (max-width: 720px) { .tw-bar-row { grid-template-columns: 100px 44px 1fr; } }
+.inv .step { scroll-margin-top: 70px; }

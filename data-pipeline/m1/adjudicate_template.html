@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThermWatch: adjudicator review</title><style>
+:root{--bg:#fff;--fg:#1b1b1b;--mut:#5a5a5a;--card:#f5f5f2;--line:#ddd;--yes:#1d7a46;--uns:#9a6700;--warn:#fff6db;--wb:#c99400;--dis:#b42318}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--fg:#ececec;--mut:#aaa;--card:#1e1e1e;--line:#333;--yes:#3fb27a;--uns:#e0a83a;--warn:#2a2410;--wb:#c99400;--dis:#f97066}}
+*{box-sizing:border-box}body{margin:0;font:17px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--fg)}
+main{max-width:800px;margin:0 auto;padding:18px 16px 60px}h1{font-size:22px;margin:4px 0}h2{font-size:18px;margin:22px 0 8px}
+.card{background:var(--card);border-radius:12px;padding:14px 16px;margin:10px 0}.warn{background:var(--warn);border-left:5px solid var(--wb);border-radius:8px;padding:12px 14px;margin:14px 0}
+.q{font-size:19px;font-weight:600}.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--mut);font-size:15px}
+table.cmp{border-collapse:collapse;width:100%}table.cmp th,table.cmp td{border:1px solid var(--line);padding:10px;text-align:left}table.cmp td.d{font-weight:700;font-size:18px;text-align:center}
+.agree{font-weight:700}.DISAGREEMENT{color:var(--dis)}.small{font-size:14px;color:var(--mut)}ul{margin:6px 0;padding-left:22px}
+label.ck{display:flex;gap:10px;align-items:flex-start;margin:8px 0}label.ck input{margin-top:5px;width:20px;height:20px}
+textarea,input[type=text]{font:inherit;width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.btns{display:grid;gap:12px;margin-top:14px}button.big{font:600 19px system-ui;padding:18px;border-radius:14px;border:3px solid;cursor:pointer;background:var(--bg);color:var(--fg)}
+button.yes{border-color:var(--yes)}button.uns{border-color:var(--uns)}button.chosen{outline:4px solid currentColor}button:focus-visible{outline:3px solid #4a90e2;outline-offset:2px}
+button.copy,button.nav{font:14px system-ui;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.navrow{display:flex;justify-content:space-between;margin-top:16px}a{color:inherit}.err{color:var(--dis);font-weight:600}
+</style></head><body><main id="app"></main><script>
+const C=__DATA__, TAKEN=__TAKEN__; let i=0, who='', A={};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const FRAMED=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+const KEY=()=>'tw_adjudication_v1|'+who.toLowerCase();
+const load=()=>{try{A=JSON.parse(localStorage.getItem(KEY())||'{}')}catch(e){A={}}}, save=()=>{try{localStorage.setItem(KEY(),JSON.stringify(A))}catch(e){}};
+function ext(url,label){return `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a> <button type="button" class="copy" onclick="cp(this,'${esc(url)}')">copy link</button>`;}
+function cp(b,u){const done=()=>{b.textContent='copied';setTimeout(()=>b.textContent='copy link',1500)};try{navigator.clipboard.writeText(u).then(done,fb)}catch(e){fb()}
+ function fb(){const t=document.createElement('textarea');t.value=u;document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){prompt('Copy:',u)}t.remove()}}
+const CHECKS=["Evidence identifies the actual hotspot/event, not merely a nearby facility.","Evidence has a credible independent source.","Evidence has a meaningful date.",
+ "Evidence places the hotspot/event at the relevant facility/unit/location.","Counter-evidence or competing sources have been considered."];
+const notice=()=>FRAMED?`<div class="warn"><b>You are viewing this inside a preview window.</b> Reading and deciding work here; links may not open and the download may be blocked. Use <b>copy link</b>, and <b>Copy my decisions</b> at the end. Best: download this file and open it directly.</div>`:'';
+function render(){const app=document.getElementById('app');
+ if(!who){app.innerHTML=notice()+`<h1>Adjudicator review</h1><div class="card">You are the <b>third person</b>. Two reviewers (${TAKEN.map(esc).join(' and ')}) already answered. For each of 10 candidates you will see what they said and decide whether the evidence really connects the hotspot to the facility.</div>
+ <label for="w"><b>Your name or initials</b> (must be a different person from ${TAKEN.map(esc).join(' and ')})</label><input type="text" id="w"><p id="e" class="err"></p>
+ <div class="btns"><button class="big uns" onclick="start()">Start</button></div>`;return;}
+ const n=Object.keys(A).length;
+ if(i>=C.length){app.innerHTML=notice()+`<h1>Adjudication complete (${n} / ${C.length})</h1>
+ <div class="card">Your decisions are stored separately from MS's and HM's answers. <b>They do not become training labels automatically</b>: the ThermWatch validator checks the evidence requirements and is the final authority.</div>
+ <div class="btns"><button class="big yes" onclick="dl()">Download adjudication decisions</button><button class="big uns" onclick="i=0;render()">Review again</button></div>
+ <h2>If the download does not work</h2><textarea readonly rows="8" style="font:13px monospace" onclick="this.select()">${esc(exportText())}</textarea>
+ <div class="btns"><button class="big uns" onclick="cp(this,exportText())">Copy my decisions</button></div>`;return;}
+ const c=C[i], a=A[c.id]||{}, ck=a.checklist||{};
+ const person=(p,name)=>`<div class="card"><div class="q">Decision: ${esc(p.decision)}</div>
+  <p><b>Written reasoning:</b> none recorded (the review tool did not ask reviewers for written reasoning).</p>
+  <p><b>Conclusion shown to ${name}:</b> “${esc(c.conclusion)}”</p>
+  <p><b>Evidence ${name} saw:</b></p><ul>${p.shown.map(id=>{const e=c.evidence.find(x=>x.item===id);return e?`<li>${esc(e.source)} (${esc(e.date)}): ${esc(e.say)} ${ext(e.url,'open')}</li>`:`<li>${esc(id)}</li>`}).join('')}</ul>
+  ${p.flag?`<p class="err">${esc(p.flag)}</p>`:''}</div>`;
+ app.innerHTML=notice()+`<div class="top"><span><b>Adjudication progress: ${n} / ${C.length}</b></span><span>Candidate ${i+1} of ${C.length}</span></div>
+ <h2>1. Candidate ${esc(c.id)}</h2><div class="card">Proposed class: <b>${esc(c.cls)}</b><br>Facility/site: <b>${esc(c.facility)}</b><br>
+ Hotspot: ${c.hs.map(v=>v.toFixed(4)).join(', ')} · Distance to facility point: <b>${c.km.toFixed(2)} km</b><br>
+ Detections: first ${esc(c.first_seen)} · last ${esc(c.last_seen)}<br>Relevant incident date/time: <b>none found</b> (see note below)<br>
+ ${ext(`https://www.google.com/maps/@${c.hs[0]},${c.hs[1]},900m/data=!3m1!1e3`,'satellite view of hotspot')}</div>
+ <h2>2. What are we deciding?</h2><div class="card"><p class="q">Does the evidence connect this specific FIRMS hotspot/event to the proposed facility or source?</p>
+ A nearby facility alone is NOT enough. The evidence must connect the actual hotspot/event to the facility or relevant process/unit.</div>
+ <div class="warn"><b>Facility exists near hotspot ≠ hotspot caused by facility.</b><br><b>No incident found online ≠ no incident occurred.</b> Judge the evidence that exists; absence of a news report proves nothing either way.</div>
+ <h2>3. What did MS (Annotator 1) say?</h2>${person(c.ms,'MS')}
+ <h2>4. What did HM (Annotator 2) say?</h2>${person(c.hm,'HM')}
+ <h2>5. Why did they agree or disagree?</h2><div class="card"><table class="cmp"><thead><tr><th>Question</th><th>MS</th><th>HM</th></tr></thead>
+ <tbody><tr><td>Does the evidence connect the hotspot to the facility?</td><td class="d">${esc(c.ms.decision)}</td><td class="d">${esc(c.hm.decision)}</td></tr></tbody></table>
+ <p class="agree ${c.agreement}">Agreement: ${c.agreement==='DISAGREEMENT'?'DISAGREEMENT':esc(c.agreement)}</p>
+ <p class="small">Both reviewers saw the same AI-collected background evidence, so agreement may partly reflect that shared input. No reviewer recorded reasons.</p>
+ <p><b>What could make this wrong:</b></p><ul>${c.risks.map(r=>`<li>${esc(r)}</li>`).join('')}</ul></div>
+ <h2>6. Does the evidence actually prove the hotspot connection?</h2><div class="card">${CHECKS.map((t,k)=>`<label class="ck"><input type="checkbox" id="c${k}" ${ck[k]?'checked':''}> ${esc(t)}</label>`).join('')}</div>
+ <div class="warn"><b>If the evidence does not establish the hotspot-to-facility connection, choose UNSURE/UNKNOWN even if both annotators chose YES.</b></div>
+ <h2>7. Your final decision</h2><label for="why"><b>Why did you choose this decision?</b> (required)</label><textarea id="why" rows="3">${esc(a.adjudicator_reason||'')}</textarea><p id="e" class="err"></p>
+ <div class="btns"><button class="big yes ${a.adjudicator_decision==='YES'?'chosen':''}" onclick="decide('YES')">YES: evidence connects hotspot</button>
+ <button class="big uns ${a.adjudicator_decision==='UNSURE_UNKNOWN'?'chosen':''}" onclick="decide('UNSURE_UNKNOWN')">UNSURE / UNKNOWN: connection not demonstrated</button></div>
+ <div class="navrow"><button class="nav" ${i===0?'disabled':''} onclick="i--;render()">← Previous</button><button class="nav" onclick="i++;render()">Next →</button></div>`;window.scrollTo(0,0);}
+function start(){const v=document.getElementById('w').value.trim(), e=document.getElementById('e');
+ if(!v){e.textContent='Please enter your name or initials.';return}
+ if(TAKEN.some(t=>t.toLowerCase()===v.toLowerCase())){e.textContent='The adjudicator must be a different person from the two reviewers.';return}
+ if(/^(ai|chatgpt|claude|gpt|llm)/i.test(v)){e.textContent='The adjudicator must be a person, not an AI.';return}
+ who=v;load();render();}
+function decide(d){const r=document.getElementById('why').value.trim();if(!r){document.getElementById('e').textContent='Please write a short reason first.';return}
+ const c=C[i];A[c.id]={candidate_id:c.id,source_id:c.source_id,proposed_label:c.proposed_label,adjudicator_role:'ADJUDICATOR',adjudicator_decision:d,adjudicator_reason:r,
+  timestamp:new Date().toISOString(),checklist:Object.fromEntries(CHECKS.map((t,k)=>[t,document.getElementById('c'+k).checked])),agreement:c.agreement,
+  ms_decision:c.ms.decision,hm_decision:c.hm.decision,quality_flags:[c.ms.flag,c.hm.flag].filter(Boolean)};save();i++;render();}
+const exportText=()=>JSON.stringify({tool:'adjudicate_v1',adjudicator_role:'ADJUDICATOR',adjudicator:who,decisions:C.filter(c=>A[c.id]).map(c=>A[c.id])},null,1);
+function dl(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([exportText()],{type:'application/json'}));a.download='adjudication_'+who.replace(/\W+/g,'_')+'.json';a.click();}
+render();
+</script></body></html>

@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+raw/*.csv
+raw/*.json
+processed/*
+!processed/.gitkeep
+!raw/.gitkeep

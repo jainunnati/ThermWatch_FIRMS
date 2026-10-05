@@ -1,0 +1,22 @@
+{
+  "name": "thermwatch-sih26162",
+  "private": true,
+  "version": "11.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/investigation.test.mjs tests/data_integrity.test.mjs tests/render.test.mjs",
+    "test:browser": "node tests/acceptance_browser.cjs",
+    "test:layout": "node tests/visual_v7_layout.cjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0"
+  }
+}

@@ -1,0 +1,35 @@
+# ThermWatch live pipeline: FIRMS NRT -> dedup -> incremental source association -> PIHS status / attribution -> public/data/thermwatch_live.json
+# Requires repository secret FIRMS_MAP_KEY (Settings -> Secrets and variables -> Actions). The key is never written to the repo or the frontend.
+name: thermwatch-live
+on:
+  schedule:
+    - cron: "15 */3 * * *"      # every 3 hours
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: thermwatch-live
+  cancel-in-progress: false
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r data-pipeline/requirements.txt
+      - name: Live update (publishes LIVE_FEED_UNAVAILABLE instead of fake data if the feed fails)
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+        run: python3 data-pipeline/intel_v1/live_update.py --indexes data-pipeline/intel_v1/live_indexes --out public/data/thermwatch_live.json
+      - name: Guard - no credentials in published data
+        run: "! grep -R -E '[A-Fa-f0-9]{32}' public/data/thermwatch_live.json || (echo 'key-like 32-hex string found in published data' && exit 1)"
+      - name: Commit live artifact
+        run: |
+          git config user.name "thermwatch-bot"
+          git config user.email "thermwatch-bot@users.noreply.github.com"
+          git add public/data/thermwatch_live.json
+          git diff --cached --quiet || git commit -m "live: update thermwatch_live.json"
+          git push

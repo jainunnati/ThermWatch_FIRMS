@@ -1,0 +1,974 @@
+{
+ "1_landing": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   88,
+   12,
+   1300,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   88,
+   12,
+   440,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   1120,
+   12,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   407,
+   790,
+   662,
+   98,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": null,
+  ".drawer--right": null,
+  ".drawer__head": null,
+  ".drawer__body": null,
+  ".layers-panel": null,
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(29, 43, 69)"
+  ],
+  ".tabs": null
+ },
+ "2_alerts": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   468,
+   12,
+   920,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   468,
+   12,
+   440,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   1120,
+   12,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   692,
+   748,
+   472,
+   140,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": [
+   76,
+   0,
+   380,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(17, 27, 46)"
+  ],
+  ".drawer--right": null,
+  ".drawer__head": [
+   76,
+   0,
+   379,
+   52,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer__body": [
+   76,
+   52,
+   379,
+   848,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".layers-panel": null,
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".tabs": [
+   76,
+   52,
+   379,
+   41,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ]
+ },
+ "3_investigation": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   468,
+   12,
+   440,
+   84,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   468,
+   12,
+   300,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   640,
+   58,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   468,
+   748,
+   440,
+   140,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": [
+   76,
+   0,
+   380,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(17, 27, 46)"
+  ],
+  ".drawer--right": [
+   920,
+   0,
+   480,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(17, 27, 46)"
+  ],
+  ".drawer__head": [
+   76,
+   0,
+   379,
+   52,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer__body": [
+   76,
+   52,
+   379,
+   848,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".layers-panel": null,
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".tabs": [
+   76,
+   52,
+   379,
+   41,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ]
+ },
+ "4_activity": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   468,
+   12,
+   920,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   468,
+   12,
+   440,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   1120,
+   12,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   692,
+   748,
+   472,
+   140,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": [
+   76,
+   0,
+   380,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(17, 27, 46)"
+  ],
+  ".drawer--right": null,
+  ".drawer__head": [
+   76,
+   0,
+   379,
+   52,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer__body": [
+   76,
+   52,
+   379,
+   848,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".layers-panel": null,
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".tabs": [
+   76,
+   52,
+   379,
+   41,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ]
+ },
+ "5_facilities": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   468,
+   12,
+   920,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   468,
+   12,
+   440,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   1120,
+   12,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   692,
+   748,
+   472,
+   140,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": [
+   76,
+   0,
+   380,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(17, 27, 46)"
+  ],
+  ".drawer--right": null,
+  ".drawer__head": [
+   76,
+   0,
+   379,
+   52,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer__body": [
+   76,
+   52,
+   379,
+   848,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".layers-panel": null,
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".tabs": null
+ },
+ "6_help": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   468,
+   12,
+   920,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   468,
+   12,
+   440,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   1120,
+   12,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   692,
+   748,
+   472,
+   140,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": [
+   76,
+   0,
+   380,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(17, 27, 46)"
+  ],
+  ".drawer--right": null,
+  ".drawer__head": [
+   76,
+   0,
+   379,
+   52,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer__body": [
+   76,
+   52,
+   379,
+   848,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".layers-panel": null,
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".tabs": null
+ },
+ "7_layers": {
+  ".app-shell": [
+   0,
+   0,
+   1400,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  "nav.sidebar": [
+   0,
+   0,
+   76,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(14, 22, 38)"
+  ],
+  ".brand": [
+   1,
+   10,
+   73,
+   43,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__nav": [
+   6,
+   67,
+   64,
+   764,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".sidebar__foot": [
+   6,
+   839,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".workspace": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar": [
+   88,
+   12,
+   1300,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".search": [
+   88,
+   12,
+   440,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".topbar__right": [
+   1120,
+   12,
+   268,
+   38,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".legend": [
+   407,
+   790,
+   662,
+   98,
+   "IBM Plex Sans",
+   "12px",
+   "rgba(255, 255, 255, 0.96)"
+  ],
+  ".map-canvas-wrap": [
+   76,
+   0,
+   1324,
+   900,
+   "IBM Plex Sans",
+   "14px",
+   "rgba(0, 0, 0, 0)"
+  ],
+  ".drawer--left": null,
+  ".drawer--right": null,
+  ".drawer__head": null,
+  ".drawer__body": null,
+  ".layers-panel": [
+   1098,
+   56,
+   290,
+   730,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(255, 255, 255)"
+  ],
+  ".nav-btn": [
+   6,
+   67,
+   64,
+   51,
+   "IBM Plex Sans",
+   "14px",
+   "rgb(29, 43, 69)"
+  ],
+  ".tabs": null
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "contract_version": "thermwatch-contract-v2",
+ "mode": "LIVE",
+ "generated_at": "2026-10-04T10:26:18+00:00",
+ "data_timestamp": null,
+ "pipeline_status": "LIVE_FEED_UNAVAILABLE",
+ "pipeline_status_detail": "FIRMS credentials missing or rejected",
+ "pipeline_run_id": "live-4f53cda18c2b",
+ "coverage_status": "Live NRT window only; no detection in a live window is NOT evidence of no fire.",
+ "system_stats": {
+  "live_observations": 0,
+  "live_observations_dedup": 0,
+  "existing_sources_active": 0,
+  "new_provisional_sources": 0
+ },
+ "live_sources": [],
+ "disclaimer": "Live association is incremental (nearest historical source within 375 m). Attribution is heuristic; cause not confirmed."
+}
