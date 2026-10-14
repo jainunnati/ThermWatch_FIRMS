@@ -1,7 +1,7 @@
 {
  "contract_version": "thermwatch-contract-v2",
  "mode": "LIVE",
- "generated_at": "2026-10-13T22:44:26+00:00",
+ "generated_at": "2026-10-14T04:52:35+00:00",
  "data_timestamp": null,
  "pipeline_status": "LIVE_FEED_UNAVAILABLE",
  "pipeline_status_detail": "FIRMS credentials missing or rejected",
